@@ -8,11 +8,15 @@ import { CreateUserDto } from './dto/user.user-create';
 export class UserService implements IUserService {
   constructor(private prisma: PrismaService) {}
 
-  createUser(userDto: CreateUserDto): Promise<User> {
-    throw new Error('Method not implemented.');
+  async getAllUsers(): Promise<User[]> {
+    return await this.prisma.users.findMany();
   }
 
-  async getAllUsers() {
-    return this.prisma.users.findMany();
+  async createUser(userDto: CreateUserDto): Promise<User> {
+    const user = this.prisma.users.create({
+      data: userDto,
+    });
+
+    return user;
   }
 }
