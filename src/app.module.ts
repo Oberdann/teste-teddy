@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
 import { PrismaService } from './database/prisma.service';
 import { UserModule } from './modules/user/user.module';
+import { LoginModule } from './modules/login/login.module';
+import { DatabaseModule } from './database/prisma.module';
+import { JwtGlobalModule } from './modules/auth/jwt-global.module';
 
 @Module({
-  imports: [UserModule],
+  imports: [DatabaseModule, JwtGlobalModule, UserModule, LoginModule],
   controllers: [],
   providers: [PrismaService],
 })
