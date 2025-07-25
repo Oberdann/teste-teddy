@@ -61,7 +61,13 @@ Rode as migrations para criar as tabelas no banco:
 npx prisma migrate dev --name init
 ```
 
-### 6. Rode a aplicação NestJS
+### 6. Rode os teste unitarios
+
+```bash
+npm run test
+```
+
+### 7. Rode a aplicação NestJS
 
 ```bash
 npm run start:dev
