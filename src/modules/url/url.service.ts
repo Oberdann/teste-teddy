@@ -3,15 +3,16 @@ import {
   NotFoundException,
   ForbiddenException,
 } from '@nestjs/common';
-import { PrismaClient, Urls } from '@prisma/client';
+import { Urls } from '@prisma/client';
 import { IUrlService } from './contracts/url.service-use-case';
 import { UrlResponseDto } from './dto/url-response';
 import { UrlCreateDto } from './dto/url-create';
 import { UrlUpdateDto } from './dto/url-update';
+import { PrismaService } from 'src/database/prisma.service';
 
 @Injectable()
 export class UrlService implements IUrlService {
-  constructor(private prisma: PrismaClient) {}
+  constructor(private prisma: PrismaService) {}
 
   async createShortUrl(
     data: UrlCreateDto,
@@ -96,13 +97,13 @@ export class UrlService implements IUrlService {
     });
   }
 
-  async redirectAndCountClicks(shortCode: string): Promise<string | null> {
+  async redirectAndCountClicks(shortCode: string): Promise<string> {
     const url = await this.prisma.urls.findFirst({
       where: { shortCode, deletedAt: null },
     });
 
     if (!url) {
-      return null;
+      throw new NotFoundException('URL não encontrada');
     }
 
     await this.prisma.urls.update({
@@ -112,7 +113,7 @@ export class UrlService implements IUrlService {
       },
     });
 
-    const response = url.originalUrl as string;
+    const response = url.originalUrl;
 
     return response;
   }

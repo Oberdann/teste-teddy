@@ -11,5 +11,5 @@ export interface IUrlService {
     userId: string,
   ): Promise<UrlResponseDto>;
   deleteUrl(id: string, userId: string): Promise<void>;
-  redirectAndCountClicks(shortCode: string): Promise<string | null>;
+  redirectAndCountClicks(shortCode: string): Promise<string>;
 }
