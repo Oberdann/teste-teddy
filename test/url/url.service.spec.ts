@@ -1,9 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from 'src/database/prisma.service';
-import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { UrlService } from 'src/modules/url/url.service';
 import { UrlCreateDto } from 'src/modules/url/dto/url-create';
 import { UrlUpdateDto } from 'src/modules/url/dto/url-update';
+import { UrlNotFoundException } from 'src/modules/url/exceptions/url-not-found.exception';
+import { UrlForbiddenException } from 'src/modules/url/exceptions/url-forbidden-exception';
 
 describe('UrlService', () => {
   let service: UrlService;
@@ -153,7 +154,7 @@ describe('UrlService', () => {
 
       await expect(
         service.updateOriginalUrl(id, { originalUrl: 'x' }, userId),
-      ).rejects.toThrow(NotFoundException);
+      ).rejects.toThrow(UrlNotFoundException);
 
       prismaMock.urls.findUnique.mockResolvedValue({
         id,
@@ -162,7 +163,7 @@ describe('UrlService', () => {
 
       await expect(
         service.updateOriginalUrl(id, { originalUrl: 'x' }, userId),
-      ).rejects.toThrow(NotFoundException);
+      ).rejects.toThrow(UrlNotFoundException);
     });
 
     it('should throw ForbiddenException if userId does not match', async () => {
@@ -175,7 +176,7 @@ describe('UrlService', () => {
 
       await expect(
         service.updateOriginalUrl(id, { originalUrl: 'x' }, userId),
-      ).rejects.toThrow(ForbiddenException);
+      ).rejects.toThrow(UrlForbiddenException);
     });
   });
 
@@ -204,7 +205,7 @@ describe('UrlService', () => {
       prismaMock.urls.findUnique.mockResolvedValue(null);
 
       await expect(service.deleteUrl(id, userId)).rejects.toThrow(
-        NotFoundException,
+        UrlNotFoundException,
       );
 
       prismaMock.urls.findUnique.mockResolvedValue({
@@ -213,7 +214,7 @@ describe('UrlService', () => {
       });
 
       await expect(service.deleteUrl(id, userId)).rejects.toThrow(
-        NotFoundException,
+        UrlNotFoundException,
       );
     });
 
@@ -225,7 +226,7 @@ describe('UrlService', () => {
       });
 
       await expect(service.deleteUrl(id, userId)).rejects.toThrow(
-        ForbiddenException,
+        UrlForbiddenException,
       );
     });
   });
@@ -258,7 +259,7 @@ describe('UrlService', () => {
       prismaMock.urls.findFirst.mockResolvedValue(null);
 
       await expect(service.redirectAndCountClicks('notfound')).rejects.toThrow(
-        NotFoundException,
+        UrlNotFoundException,
       );
     });
   });
