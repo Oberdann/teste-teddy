@@ -58,7 +58,7 @@ npx prisma generate
 Rode as migrations para criar as tabelas no banco:
 
 ```bash
-npx prisma migrate dev --name init
+npx prisma migrate deploy
 ```
 
 ### 6. Rode os teste unitarios
