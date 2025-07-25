@@ -8,7 +8,6 @@ import { UrlUpdateDto } from 'src/modules/url/dto/url-update';
 describe('UrlService', () => {
   let service: UrlService;
 
-  // Mock básico para prisma.urls
   const prismaMock = {
     urls: {
       create: jest.fn(),
@@ -31,7 +30,6 @@ describe('UrlService', () => {
 
   describe('createShortUrl', () => {
     it('should create a short URL and return UrlResponseDto', async () => {
-      // forçamos o código curto fixo para testar
       jest
         .spyOn(service as any, 'generateUniqueShortCode')
         .mockResolvedValue('abc123');
@@ -267,11 +265,9 @@ describe('UrlService', () => {
 
   describe('generateUniqueShortCode', () => {
     it('should generate a unique short code', async () => {
-      // Simula que o primeiro código já existe e o segundo não
       const existingCode = 'abc123';
       const newCode = 'def456';
 
-      // Mock da função generateShortCode para controlar valores
       const spyGenerateShortCode = jest.spyOn(
         service as any,
         'generateShortCode',
@@ -281,8 +277,8 @@ describe('UrlService', () => {
         .mockReturnValueOnce(newCode);
 
       prismaMock.urls.findUnique
-        .mockResolvedValueOnce({ id: 'some-id' }) // já existe
-        .mockResolvedValueOnce(null); // não existe
+        .mockResolvedValueOnce({ id: 'some-id' })
+        .mockResolvedValueOnce(null);
 
       const code = await (service as any).generateUniqueShortCode();
 

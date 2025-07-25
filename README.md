@@ -33,7 +33,7 @@ cd <PASTA_DO_PROJETO>
 
 ### 2. Configure variáveis de ambiente
 
-### Crie um arquivo .env na raiz do projeto (baseado no .env.example)
+Crie um arquivo .env na raiz do projeto (baseado no .env.example)
 
 ### 3. Levantar o banco de dados com Docker Compose
 
@@ -71,4 +71,16 @@ npm run test
 
 ```bash
 npm run start:dev
+```
+
+### Swagger:
+
+```bash
+http://localhost:3000/doc
+```
+
+### Para redirecionar use:
+
+```bash
+http://localhost:3000/api/v1/url/{shortCode}
 ```

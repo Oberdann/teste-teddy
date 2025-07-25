@@ -1,14 +1,12 @@
-import {
-  Injectable,
-  NotFoundException,
-  ForbiddenException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Urls } from '@prisma/client';
 import { IUrlService } from './contracts/url.service-use-case';
 import { UrlResponseDto } from './dto/url-response';
 import { UrlCreateDto } from './dto/url-create';
 import { UrlUpdateDto } from './dto/url-update';
 import { PrismaService } from 'src/database/prisma.service';
+import { UrlForbiddenException } from './exceptions/url-forbidden-exception';
+import { UrlNotFoundException } from './exceptions/url-not-found.exception';
 
 @Injectable()
 export class UrlService implements IUrlService {
@@ -59,11 +57,11 @@ export class UrlService implements IUrlService {
     const url = await this.prisma.urls.findUnique({ where: { id } });
 
     if (!url || url.deletedAt) {
-      throw new NotFoundException('URL não encontrada');
+      throw new UrlNotFoundException('URL não encontrada');
     }
 
     if (url.userId !== userId) {
-      throw new ForbiddenException('Sem permissão para atualizar');
+      throw new UrlForbiddenException('Sem permissão para atualizar');
     }
 
     const updated = await this.prisma.urls.update({
@@ -82,11 +80,11 @@ export class UrlService implements IUrlService {
     const url = await this.prisma.urls.findUnique({ where: { id } });
 
     if (!url || url.deletedAt) {
-      throw new NotFoundException('URL não encontrada');
+      throw new UrlNotFoundException('URL não encontrada');
     }
 
     if (url.userId !== userId) {
-      throw new ForbiddenException('Sem permissão para atualizar');
+      throw new UrlForbiddenException('Sem permissão para atualizar');
     }
 
     await this.prisma.urls.update({
@@ -103,7 +101,7 @@ export class UrlService implements IUrlService {
     });
 
     if (!url) {
-      throw new NotFoundException('URL não encontrada');
+      throw new UrlNotFoundException('URL não encontrada');
     }
 
     await this.prisma.urls.update({
