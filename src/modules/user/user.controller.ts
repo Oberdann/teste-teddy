@@ -41,6 +41,6 @@ export class UserController {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...userResponse } = user;
 
-    return { message: 'Usuário criaro com sucesso', data: userResponse };
+    return { message: 'Usuário criado com sucesso', data: userResponse };
   }
 }
